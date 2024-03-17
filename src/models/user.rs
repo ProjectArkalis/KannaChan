@@ -33,7 +33,7 @@ impl<'a> From<&'a str> for Roles {
 pub struct User {
     pub id: String,
     pub display_name: String,
-    pub role: Roles
+    pub role: Roles,
 }
 
 impl From<GetUserInfoResponse> for User {
@@ -41,7 +41,7 @@ impl From<GetUserInfoResponse> for User {
         User {
             id: value.id,
             display_name: value.display_name,
-            role: Roles::from(value.role.as_str())
+            role: Roles::from(value.role.as_str()),
         }
     }
 }

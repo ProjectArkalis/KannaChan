@@ -4,7 +4,7 @@ use clap::{Parser, Subcommand};
 pub struct Cli {
     #[clap(subcommand)]
     pub command: Commands,
-}   
+}
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
@@ -15,6 +15,27 @@ pub enum Commands {
         name: String,
         ///Admin key
         #[arg(short, long)]
-        admin_key: Option<String>
+        admin_key: Option<String>,
+    },
+    /// Gerenciar animes
+    Anime {
+        #[clap(subcommand)]
+        command: AnimeCommands,
+    },
+}
+
+#[derive(Debug, Subcommand)]
+pub enum AnimeCommands {
+    /// Pega informações de um anime da AniList
+    GetInfo {
+        /// Id do anime
+        #[arg(short, long)]
+        id: i64,
+    },
+    /// Adiciona um anime
+    AddAnime {
+        /// Arquivo json com as informações do anime
+        #[arg(short, long)]
+        file: String
     }
 }

@@ -14,9 +14,10 @@ pub struct AuthInterceptor {
 impl Interceptor for AuthInterceptor {
     fn call(&mut self, mut request: Request<()>) -> Result<Request<()>, Status> {
         if let Some(token) = &self.token {
-            request
-                .metadata_mut()
-                .insert("authorization", format!("Bearer {}", token).parse().unwrap());
+            request.metadata_mut().insert(
+                "authorization",
+                format!("Bearer {}", token).parse().unwrap(),
+            );
         }
         Ok(request)
     }

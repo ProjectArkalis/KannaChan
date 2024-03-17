@@ -23,13 +23,15 @@ reqwest = { version = "0.11.24", features = [
     "rustls-tls",
 ], default-features = false }
 clap = { version = "4.3.0", features = ["derive"] }
-open = "5.1.1"
+# open = "5.1.1"
 scanln = "0.1.1"
 toml = "0.8.10"
 tonic = "0.11.0"
 prost = "0.12.3"
 anyhow = "1.0.81"
 lazy_static = "1.4.0"
+graphql_client = { version = "0.13.0", features = ["reqwest-rustls"] }
+chrono = "0.4.35"
 
 [build-dependencies]
 tonic-build = "0.11"
