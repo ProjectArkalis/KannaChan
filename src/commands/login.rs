@@ -1,12 +1,14 @@
+use crate::{
+    arkalis::{CreateAdminRequest, CreateTokenRequest},
+    Arkalis, CONFIGS,
+};
 use tokio::fs;
 
-use crate::{arkalis::{CreateAdminRequest, CreateTokenRequest}, CONFIGS};
-
-use super::get_client;
-
-pub async fn login(name: String, admin_key: Option<String>) -> anyhow::Result<()> {
-    let mut client = get_client().await;
-
+pub async fn login<T>(
+    name: String,
+    admin_key: Option<String>,
+    mut client: Arkalis,
+) -> anyhow::Result<()> {
     let token = if let Some(key) = admin_key {
         client
             .create_admin(CreateAdminRequest {

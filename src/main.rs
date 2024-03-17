@@ -1,13 +1,19 @@
+#![feature(type_alias_impl_trait)]
+
 use crate::configs::Configs;
 use arguments::{Cli, Commands};
 use arkalis::arkalis_core_service_client::ArkalisCoreServiceClient;
 use clap::Parser;
-use commands::{login, set_client};
+use commands::login;
+use tonic::{service::{interceptor::InterceptedService, Interceptor}, transport::Channel, Request, Status};
 
 mod arguments;
 mod configs;
 mod models;
 mod commands;
+
+//isso vai dar merda
+type Arkalis = ArkalisCoreServiceClient<InterceptedService<Channel, Box<dyn Interceptor>>>;
 
 pub mod arkalis {
     tonic::include_proto!("arkalis");
@@ -21,10 +27,19 @@ lazy_static::lazy_static! {
 async fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
 
-    let client = ArkalisCoreServiceClient::connect(CONFIGS.arkalis_url.clone()).await?;
-    set_client(client).await;
+    let channel = Channel::from_static(&CONFIGS.arkalis_url).connect().await?;
+
+    let mut client = ArkalisCoreServiceClient::with_interceptor(channel, |mut req: Request<()>| {
+        if let Some(token) = &CONFIGS.token {
+            req.metadata_mut().insert("", format!("Bearer {}", token).parse().unwrap());
+        }
+        Ok(req)
+    });
+    
+
+    // set_client(a).await;
 
     match args.command {
-        Commands::Login { name, admin_key } => login::login(name, admin_key).await,
+        Commands::Login { name, admin_key } => login::login(name, admin_key, client).await,
     }
 }
