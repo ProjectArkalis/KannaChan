@@ -1,6 +1,5 @@
 use crate::{
-    arkalis::{CreateAdminRequest, CreateTokenRequest},
-    Arkalis, CONFIGS,
+    arkalis::{CreateAdminRequest, CreateTokenRequest, GetUserInfoRequest}, client::{get_client, Arkalis}, models::user::User, CONFIGS
 };
 use tokio::fs;
 
@@ -25,6 +24,12 @@ pub async fn login(
             .into_inner()
             .token
     };
+
+    client = get_client(Some(token.clone())).await?;
+    let user = client.get_user_info(GetUserInfoRequest {}).await?;
+    let user = User::from(user.into_inner());
+
+    println!("Logado como: {} [{}]; Role: {}", user.display_name, user.id, String::from(user.role));
 
     let mut configs = CONFIGS.clone();
     configs.token = Some(token);
