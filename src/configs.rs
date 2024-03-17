@@ -4,12 +4,11 @@ use figment::{
     Figment,
 };
 use serde::{Deserialize, Serialize};
-use crate::models::user::Auth;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Configs {
     pub arkalis_url: String,
-    pub auth: Option<Auth>
+    pub token: Option<String>
 }
 
 impl Configs {
@@ -26,8 +25,8 @@ impl Configs {
 impl Default for Configs {
     fn default() -> Configs {
         Configs {
-            arkalis_url: "http://localhost:5016".into(),
-            auth: None
+            arkalis_url: "http://localhost:8000".into(),
+            token: None
         }
     }
 }

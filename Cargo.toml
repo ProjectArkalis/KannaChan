@@ -26,3 +26,10 @@ clap = { version = "4.3.0", features = ["derive"] }
 open = "5.1.1"
 scanln = "0.1.1"
 toml = "0.8.10"
+tonic = "0.11.0"
+prost = "0.12.3"
+anyhow = "1.0.81"
+lazy_static = "1.4.0"
+
+[build-dependencies]
+tonic-build = "0.11"

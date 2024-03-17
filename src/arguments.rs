@@ -10,11 +10,11 @@ pub struct Cli {
 pub enum Commands {
     ///Faz o login
     Login {
-        // ///Itegration token
-        // #[arg(short, long)]
-        // token: String,
-        // ///ID do usuario para autenticar
-        // #[arg(short, long)]
-        // discord_id: u64
+        ///Display name
+        #[arg(short, long)]
+        name: String,
+        ///Admin key
+        #[arg(short, long)]
+        admin_key: Option<String>
     }
 }
