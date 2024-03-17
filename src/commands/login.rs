@@ -4,7 +4,7 @@ use crate::{
 };
 use tokio::fs;
 
-pub async fn login<T>(
+pub async fn login(
     name: String,
     admin_key: Option<String>,
     mut client: Arkalis,
