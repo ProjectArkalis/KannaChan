@@ -27,13 +27,13 @@ pub enum Commands {
 #[derive(Debug, Subcommand)]
 pub enum AnimeCommands {
     /// Pega informações de um anime da AniList
-    GetInfo {
+    Get {
         /// Id do anime
         #[arg(short, long)]
         id: i64,
     },
     /// Adiciona um anime
-    AddAnime {
+    Add {
         /// Arquivo json com as informações do anime
         #[arg(short, long)]
         file: String
