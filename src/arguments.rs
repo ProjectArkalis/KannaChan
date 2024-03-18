@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Debug, Parser)]
 pub struct Cli {
@@ -24,6 +24,12 @@ pub enum Commands {
     },
 }
 
+#[derive(Debug, Clone, ValueEnum)]
+pub enum InfoSource {
+    Anilist,
+    Arkalis,
+}
+
 #[derive(Debug, Subcommand)]
 pub enum AnimeCommands {
     /// Pega informações de um anime da AniList
@@ -31,11 +37,18 @@ pub enum AnimeCommands {
         /// Id do anime
         #[arg(short, long)]
         id: i64,
+        /// Fonte das informações
+        #[arg(short, long)]
+        #[clap(value_enum, default_value_t = InfoSource::Anilist)]
+        source: InfoSource,
+        /// Arquivo ou pasta onde serão salvas as informações, se for uma pasta sera salvo como {id}.json
+        #[arg(short, long)]
+        output: String
     },
-    /// Adiciona um anime
+    /// Adiciona um anime ou atualiza um anime (id necessario)
     Add {
         /// Arquivo json com as informações do anime
         #[arg(short, long)]
-        file: String
-    }
+        file: String,
+    },
 }

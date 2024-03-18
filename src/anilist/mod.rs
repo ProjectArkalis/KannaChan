@@ -10,11 +10,19 @@ use reqwest::Client;
 )]
 pub struct GetMedia;
 
-pub async fn get_media(id: i64) -> anyhow::Result<GetMediaMedia> {
+pub async fn get_media(id: i64) -> anyhow::Result<GetMediaMedia, ()> {
     let client = Client::new();
 
     let vars = get_media::Variables { id };
-    let resp = post_graphql::<GetMedia, _>(&client, "https://graphql.anilist.co", vars).await?;
+    let resp = post_graphql::<GetMedia, _>(&client, "https://graphql.anilist.co", vars).await.unwrap();
 
-    Ok(resp.data.unwrap().media.unwrap())
+    if let Some(data) = resp.data {
+        if let Some(media) = data.media {
+            Ok(media)
+        } else {
+            Err(())
+        }
+    } else {
+        Err(())
+    }
 }

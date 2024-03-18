@@ -1,6 +1,6 @@
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
-use crate::{anilist::get_media::GetMediaMedia, arkalis::{AnimeInAnimeList, AnimeList, CreateAnimeRequest, EditAnimeRequest, Title, TitleType}};
+use crate::{anilist::get_media::GetMediaMedia, arkalis::{Anime, AnimeInAnimeList, AnimeList, CreateAnimeRequest, EditAnimeRequest, Title, TitleType}};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ArkalisAnime {
@@ -19,6 +19,22 @@ impl From<ArkalisAnime> for EditAnimeRequest {
             synopsis: value.anime.synopsis,
             thumbnail_id: value.anime.thumbnail_id,
             titles: value.anime.titles
+        }
+    }
+}
+
+impl From<Anime> for CreateAnimeRequest {
+    fn from(value: Anime) -> Self {
+        CreateAnimeRequest {
+            titles: value.titles,
+            anime_in_lists: value.anime_in_lists,
+            banner_id: value.banner_id,
+            genre: value.genre,
+            is_hidden: value.is_hidden,
+            is_nsfw: value.is_nsfw,
+            release_date: value.release_date,
+            synopsis: value.synopsis,
+            thumbnail_id: value.thumbnail_id,
         }
     }
 }
