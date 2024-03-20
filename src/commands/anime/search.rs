@@ -1,4 +1,6 @@
-use crate::{arkalis::SearchAnimeRequest, client::Arkalis};
+use tabled::Table;
+
+use crate::{arkalis::SearchAnimeRequest, client::Arkalis, models::search_table::SearchTable};
 
 pub async fn search(
     title: Option<String>,
@@ -20,7 +22,15 @@ pub async fn search(
         })
         .await?;
 
-    println!("{:#?}", a.into_inner());
+    let b = a
+        .into_inner()
+        .animes
+        .into_iter()
+        .map(|x| SearchTable::from(x))
+        .collect::<Vec<SearchTable>>();
+
+    let tabled = Table::new(b).to_string();
+    println!("{tabled}");
 
     Ok(())
 }

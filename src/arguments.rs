@@ -61,7 +61,7 @@ pub enum AnimeCommands {
         is_nsfw: Option<bool>,
         #[arg(short, long)]
         genre: Option<u64>,
-        #[arg(short, long)]
+        #[arg(short = 'r', long)]
         start_release_date: Option<i64>,
         #[arg(short, long)]
         end_release_date: Option<i64>,
