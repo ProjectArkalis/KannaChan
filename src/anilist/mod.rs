@@ -14,7 +14,9 @@ pub async fn get_media(id: i64) -> anyhow::Result<GetMediaMedia, ()> {
     let client = Client::new();
 
     let vars = get_media::Variables { id };
-    let resp = post_graphql::<GetMedia, _>(&client, "https://graphql.anilist.co", vars).await.unwrap();
+    let resp = post_graphql::<GetMedia, _>(&client, "https://graphql.anilist.co", vars)
+        .await
+        .unwrap();
 
     if let Some(data) = resp.data {
         if let Some(media) = data.media {

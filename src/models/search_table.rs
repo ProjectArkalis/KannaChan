@@ -6,7 +6,7 @@ use crate::arkalis::Anime;
 pub struct SearchTable {
     pub id: u32,
     pub title: String,
-    pub genre: u64
+    pub genre: u64,
 }
 
 impl From<Anime> for SearchTable {
@@ -20,7 +20,7 @@ impl From<Anime> for SearchTable {
                 .unwrap()
                 .name
                 .clone(),
-            genre: value.genre
+            genre: value.genre,
         }
     }
 }

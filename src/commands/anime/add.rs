@@ -7,9 +7,11 @@ pub async fn add(file: String, mut client: Arkalis) -> anyhow::Result<()> {
 
     let mut anime = serde_json::from_str::<ArkalisAnime>(&contents_str)?;
 
+    // println!("{:#?}", Genre::from_bits(anime.anime.genre).unwrap().iter().map(|x| x.to_string()).collect::<Vec<String>>());
+
     if let Some(id) = anime.arkalis_id {
         client.edit_anime(EditAnimeRequest::from(anime)).await?;
-        
+
         println!("Atualizado anime com o id: {}", id);
     } else {
         let resp = client.create_anime(anime.anime.clone()).await?;

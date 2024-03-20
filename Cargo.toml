@@ -33,6 +33,7 @@ lazy_static = "1.4.0"
 graphql_client = { version = "0.13.0", features = ["reqwest-rustls"] }
 chrono = "0.4.35"
 tabled = "0.15.0"
+bitflags = "2.5.0"
 
 [build-dependencies]
 tonic-build = "0.11"

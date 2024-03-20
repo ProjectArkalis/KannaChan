@@ -1,11 +1,18 @@
+use crate::{
+    anilist::get_media::GetMediaMedia,
+    arkalis::{
+        Anime, AnimeInAnimeList, AnimeList, CreateAnimeRequest, EditAnimeRequest, Title, TitleType,
+    },
+};
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
-use crate::{anilist::get_media::GetMediaMedia, arkalis::{Anime, AnimeInAnimeList, AnimeList, CreateAnimeRequest, EditAnimeRequest, Title, TitleType}};
+
+use super::genres::Genre;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ArkalisAnime {
     pub arkalis_id: Option<u32>,
-    pub anime: CreateAnimeRequest
+    pub anime: CreateAnimeRequest,
 }
 
 impl From<ArkalisAnime> for EditAnimeRequest {
@@ -18,7 +25,7 @@ impl From<ArkalisAnime> for EditAnimeRequest {
             release_date: value.anime.release_date,
             synopsis: value.anime.synopsis,
             thumbnail_id: value.anime.thumbnail_id,
-            titles: value.anime.titles
+            titles: value.anime.titles,
         }
     }
 }
@@ -89,7 +96,12 @@ impl From<GetMediaMedia> for CreateAnimeRequest {
             synopsis: value.description.unwrap(),
             thumbnail_id: None,
             banner_id: None,
-            genre: 1
+            genre: value
+                .genres
+                .unwrap()
+                .into_iter()
+                .map(|x| Genre::from(x.unwrap()).bits())
+                .sum(),
         }
     }
 }
