@@ -1,18 +1,19 @@
+use super::{genres::Genre, season::Season};
 use crate::{
     anilist::get_media::GetMediaMedia,
     arkalis::{
-        Anime, AnimeInAnimeList, AnimeList, CreateAnimeRequest, EditAnimeRequest, Title, TitleType,
+        Anime, AnimeInAnimeList, AnimeList, CreateAnimeRequest, EditAnimeRequest,
+        Title, TitleType,
     },
 };
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::genres::Genre;
-
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ArkalisAnime {
     pub arkalis_id: Option<u32>,
     pub anime: CreateAnimeRequest,
+    pub seasons: Vec<Season>,
 }
 
 impl From<ArkalisAnime> for EditAnimeRequest {

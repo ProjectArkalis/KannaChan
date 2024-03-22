@@ -1,24 +1,39 @@
 query GetMedia($id: Int!) {
   Media(id: $id) {
-    id,
-    idMal,
+    id
+    idMal
     title {
       romaji
       english
       native
       userPreferred
-    },
-    description,
-    bannerImage,
+    }
+    description
+    bannerImage
     coverImage {
       extraLarge
     }
-    isAdult,
-    genres,
+    isAdult
+    genres
     startDate {
       year
       month
       day
+    }
+    relations {
+      edges {
+        relationType
+      }
+      nodes {
+        id
+        status
+        title {
+          romaji
+        }
+        coverImage {
+          extraLarge
+        }
+      }
     }
   }
 }

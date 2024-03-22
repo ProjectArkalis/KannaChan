@@ -1,2 +1,2 @@
 pub mod anime;
-pub mod login;
+pub mod auth;

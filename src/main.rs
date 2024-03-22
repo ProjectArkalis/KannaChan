@@ -2,7 +2,7 @@ use crate::configs::Configs;
 use arguments::{Cli, Commands};
 use clap::Parser;
 use client::get_client;
-use commands::{anime, login};
+use commands::{anime, auth};
 
 mod anilist;
 mod arguments;
@@ -26,7 +26,7 @@ async fn main() -> anyhow::Result<()> {
     let client = get_client(CONFIGS.token.clone()).await?;
 
     match args.command {
-        Commands::Login { name, admin_key } => login::login(name, admin_key, client).await,
+        Commands::Auth { command } => auth::run(command, client).await,
         Commands::Anime { command } => anime::run(command, client).await,
     }
 }

@@ -1,5 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
 
+use crate::commands::auth::AuthCommands;
+
 #[derive(Debug, Parser)]
 pub struct Cli {
     #[clap(subcommand)]
@@ -8,14 +10,10 @@ pub struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
-    ///Faz o login
-    Login {
-        ///Display name
-        #[arg(short, long)]
-        name: String,
-        ///Admin key
-        #[arg(short, long)]
-        admin_key: Option<String>,
+    ///Autenticar
+    Auth {
+        #[clap(subcommand)]
+        command: AuthCommands,
     },
     /// Gerenciar animes
     Anime {

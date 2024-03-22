@@ -1,4 +1,6 @@
-use self::get_media::GetMediaMedia;
+use crate::models::season::Season;
+use self::get_media::{GetMediaMedia, MediaRelation, MediaStatus};
+use async_recursion::async_recursion;
 use graphql_client::{reqwest::post_graphql, GraphQLQuery};
 use reqwest::Client;
 
@@ -6,7 +8,7 @@ use reqwest::Client;
 #[graphql(
     schema_path = "src/anilist/schema.graphql",
     query_path = "src/anilist/get_media.graphql",
-    response_derives = "Debug"
+    response_derives = "Debug, PartialEq"
 )]
 pub struct GetMedia;
 
@@ -27,4 +29,43 @@ pub async fn get_media(id: i64) -> anyhow::Result<GetMediaMedia, ()> {
     } else {
         Err(())
     }
+}
+
+#[async_recursion]
+pub async fn get_season(id: i64) -> anyhow::Result<Vec<Season>, ()> {
+    let mut seasons = vec![];
+
+    let media = get_media(id).await?;
+    seasons.push(Season {
+        id: None,
+        name: media
+            .title
+            .as_ref()
+            .unwrap()
+            .romaji
+            .as_ref()
+            .unwrap()
+            .clone(),
+        cover: media.cover_image.as_ref().unwrap().extra_large.clone(),
+    });
+
+    if let Some(relations) = media.relations {
+        let edges = relations.edges.unwrap();
+        let nodes = relations.nodes.unwrap();
+
+        let sequel_i = edges.into_iter().position(|x| {
+            x.as_ref().unwrap().relation_type.as_ref().unwrap() == &MediaRelation::SEQUEL
+        });
+
+        if let Some(sequel_i) = sequel_i {
+            if let Some(sequel) = &nodes[sequel_i] {
+                let status = sequel.status.as_ref().unwrap();
+                if status == &MediaStatus::FINISHED || status == &MediaStatus::RELEASING {
+                    seasons.append(&mut get_season(sequel.id).await?)
+                }
+            }
+        }
+    }
+
+    Ok(seasons)
 }

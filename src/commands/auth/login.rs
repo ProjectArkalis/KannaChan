@@ -1,5 +1,7 @@
 use crate::{
-    arkalis::{CreateAdminRequest, CreateTokenRequest, GetUserInfoRequest},
+    arkalis::{
+        CreateAdminRequest, CreateRecoveryKeyRequest, CreateTokenRequest, GetUserInfoRequest,
+    },
     client::{get_client, Arkalis},
     models::user::User,
     CONFIGS,
@@ -37,6 +39,17 @@ pub async fn login(
         user.display_name,
         user.id,
         String::from(user.role)
+    );
+
+    let recovery_token = client
+        .create_recovery_key(CreateRecoveryKeyRequest {})
+        .await?
+        .into_inner()
+        .recovery_key;
+
+    println!(
+        "\nESSE É SEU TOKEN DE RECUPERAÇÃO NÃO PERCA-O: \n{}\n",
+        recovery_token
     );
 
     let mut configs = CONFIGS.clone();
