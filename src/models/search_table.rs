@@ -1,6 +1,5 @@
+use crate::arkalis_api::Anime;
 use tabled::Tabled;
-
-use crate::arkalis::Anime;
 
 #[derive(Debug, Tabled)]
 pub struct SearchTable {

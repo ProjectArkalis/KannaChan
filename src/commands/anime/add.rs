@@ -1,7 +1,8 @@
 use crate::{
-    arkalis::{AddSeasonRequest, EditAnimeRequest, EditSeasonRequest},
+    arkalis_api::{AddSeasonRequest, CreateAnimeRequest, EditAnimeRequest, EditSeasonRequest},
     client::Arkalis,
-    models::anime::ArkalisAnime,
+    models::anime::anime_infos::AnimeInfos,
+    // models::anime::ArkalisAnime,
 };
 use tokio::fs;
 
@@ -9,7 +10,7 @@ pub async fn add(file: String, mut client: Arkalis) -> anyhow::Result<()> {
     let contents = fs::read(&file).await?;
     let contents_str = String::from_utf8(contents)?;
 
-    let mut anime = serde_json::from_str::<ArkalisAnime>(&contents_str)?;
+    let mut anime = serde_json::from_str::<AnimeInfos>(&contents_str)?;
 
     if let Some(id) = anime.arkalis_id {
         client
@@ -21,7 +22,7 @@ pub async fn add(file: String, mut client: Arkalis) -> anyhow::Result<()> {
                 client
                     .edit_season(EditSeasonRequest {
                         id: s_id,
-                        cover_id: season.1.cover.clone(),
+                        cover_id: season.1.thumbnail.clone(),
                         name: season.1.name.clone(),
                         sequence: season.0 as u32,
                     })
@@ -31,14 +32,16 @@ pub async fn add(file: String, mut client: Arkalis) -> anyhow::Result<()> {
 
         println!("Atualizado anime com o id: {}", id);
     } else {
-        let resp = client.create_anime(anime.anime.clone()).await?;
+        let resp = client
+            .create_anime(CreateAnimeRequest::from(anime.anime.clone()))
+            .await?;
         let id = resp.into_inner().id;
 
         for season in anime.seasons.iter_mut().enumerate() {
             let season_id = client
                 .add_season(AddSeasonRequest {
                     name: season.1.name.clone(),
-                    cover_id: season.1.cover.clone(),
+                    cover_id: season.1.thumbnail.clone(),
                     sequence: season.0 as u32,
                     anime_id: id,
                 })

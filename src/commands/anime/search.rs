@@ -1,6 +1,5 @@
+use crate::{arkalis_api::SearchAnimeRequest, client::Arkalis, models::search_table::SearchTable};
 use tabled::Table;
-
-use crate::{arkalis::SearchAnimeRequest, client::Arkalis, models::search_table::SearchTable};
 
 pub async fn search(
     title: Option<String>,

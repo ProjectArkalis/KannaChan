@@ -1,4 +1,4 @@
-use crate::arkalis::GetUserInfoResponse;
+use crate::arkalis_api::GetUserInfoResponse;
 
 #[derive(PartialEq, Eq, Clone, Copy, Debug)]
 #[repr(u8)]

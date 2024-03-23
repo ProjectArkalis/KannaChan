@@ -1,5 +1,5 @@
-use crate::models::season::Season;
 use self::get_media::{GetMediaMedia, MediaRelation, MediaStatus};
+use crate::models::season::KannaSeason;
 use async_recursion::async_recursion;
 use graphql_client::{reqwest::post_graphql, GraphQLQuery};
 use reqwest::Client;
@@ -32,11 +32,11 @@ pub async fn get_media(id: i64) -> anyhow::Result<GetMediaMedia, ()> {
 }
 
 #[async_recursion]
-pub async fn get_season(id: i64) -> anyhow::Result<Vec<Season>, ()> {
+pub async fn get_season(id: i64) -> anyhow::Result<Vec<KannaSeason>, ()> {
     let mut seasons = vec![];
 
     let media = get_media(id).await?;
-    seasons.push(Season {
+    seasons.push(KannaSeason {
         id: None,
         name: media
             .title
@@ -46,7 +46,7 @@ pub async fn get_season(id: i64) -> anyhow::Result<Vec<Season>, ()> {
             .as_ref()
             .unwrap()
             .clone(),
-        cover: media.cover_image.as_ref().unwrap().extra_large.clone(),
+        thumbnail: media.cover_image.as_ref().unwrap().extra_large.clone(),
     });
 
     if let Some(relations) = media.relations {

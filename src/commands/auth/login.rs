@@ -1,5 +1,5 @@
 use crate::{
-    arkalis::{
+    arkalis_api::{
         CreateAdminRequest, CreateRecoveryKeyRequest, CreateTokenRequest, GetUserInfoRequest,
     },
     client::{get_client, Arkalis},

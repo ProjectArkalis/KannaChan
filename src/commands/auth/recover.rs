@@ -1,11 +1,10 @@
-use tokio::fs;
-
 use crate::{
-    arkalis::{GetUserInfoRequest, RecoveryUserRequest},
+    arkalis_api::{GetUserInfoRequest, RecoveryUserRequest},
     client::{get_client, Arkalis},
     models::user::User,
     CONFIGS,
 };
+use tokio::fs;
 
 pub async fn recover(key: String, mut client: Arkalis) -> anyhow::Result<()> {
     let token = client

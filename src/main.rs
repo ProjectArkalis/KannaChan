@@ -11,7 +11,7 @@ mod commands;
 mod configs;
 mod models;
 
-pub mod arkalis {
+pub mod arkalis_api {
     tonic::include_proto!("arkalis");
 }
 

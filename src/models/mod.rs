@@ -1,5 +1,5 @@
 pub mod anime;
-pub mod genres;
+pub mod arkalis;
 pub mod search_table;
-pub mod user;
 pub mod season;
+pub mod user;

@@ -1,4 +1,4 @@
-use crate::{arkalis::arkalis_core_service_client::ArkalisCoreServiceClient, CONFIGS};
+use crate::{arkalis_api::arkalis_core_service_client::ArkalisCoreServiceClient, CONFIGS};
 use tonic::{
     service::{interceptor::InterceptedService, Interceptor},
     transport::Channel,
