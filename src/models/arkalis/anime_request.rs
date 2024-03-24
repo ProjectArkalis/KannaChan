@@ -9,9 +9,9 @@ impl From<KannaAnime> for CreateAnimeRequest {
             titles: value.titles.into_iter().map(|x| x.into()).collect(),
             synopsis: value.synopsis,
             //todo
-            thumbnail_id: None,
+            thumbnail_id: value.thumbnail_id,
             // todo
-            banner_id: None,
+            banner_id: value.banner_id,
             is_hidden: value.is_hidden,
             is_nsfw: value.is_nsfw,
             genre: value.genre,

@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Configs {
     pub arkalis_url: String,
+    pub aoba_url: String,
     pub token: Option<String>,
 }
 
@@ -26,6 +27,7 @@ impl Default for Configs {
     fn default() -> Configs {
         Configs {
             arkalis_url: "http://localhost:8000".into(),
+            aoba_url: "http://localhost:8001".into(),
             token: None,
         }
     }

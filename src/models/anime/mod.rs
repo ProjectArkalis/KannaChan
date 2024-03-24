@@ -3,7 +3,7 @@ use self::{
     genres::Genre,
     title::{KannaTitle, KannaTitleType},
 };
-use crate::{anilist::get_media::GetMediaMedia, arkalis_api};
+use crate::{anilist::get_media::GetMediaMedia, aoba::AobaService, arkalis_api};
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -23,6 +23,12 @@ pub struct KannaAnime {
     pub genre: u64,
     pub release_date: i64,
     pub anime_lists: Vec<KannaAnimeList>,
+    
+    //deve ter algum jeito melhor de fazer isso
+    #[serde(skip)]
+    pub banner_id: Option<String>,
+    #[serde(skip)]
+    pub thumbnail_id: Option<String>
 }
 
 impl From<GetMediaMedia> for KannaAnime {
@@ -60,7 +66,9 @@ impl From<GetMediaMedia> for KannaAnime {
             ],
             synopsis: value.description.unwrap(),
             thumbnail: value.cover_image.unwrap().extra_large,
+            thumbnail_id: None,
             banner: value.banner_image,
+            banner_id: None,
             is_hidden: false,
             is_nsfw: value.is_adult.unwrap(),
             genre: value
@@ -96,9 +104,15 @@ impl From<arkalis_api::Anime> for KannaAnime {
                 })
                 .collect::<Vec<KannaTitle>>(),
             synopsis: value.synopsis,
+
+
             //todo
-            thumbnail: value.thumbnail_id,
-            banner: value.banner_id,
+            thumbnail: value.thumbnail_id.clone(),
+            banner: value.banner_id.clone(),
+
+            thumbnail_id: value.thumbnail_id,
+            banner_id: value.banner_id,
+
             is_hidden: value.is_hidden,
             is_nsfw: value.is_nsfw,
             genre: value.genre,
@@ -116,5 +130,29 @@ impl From<arkalis_api::Anime> for KannaAnime {
                 })
                 .collect::<Vec<KannaAnimeList>>(),
         }
+    }
+}
+
+impl KannaAnime {
+    pub async fn save_images(&mut self, aoba: AobaService) -> anyhow::Result<()> {
+        self.banner_id = if let Some(banner) = &self.banner {
+            let id = aoba.upload(banner).await?;
+            self.banner = Some(aoba.format(&id));
+
+            Some(id)
+        } else {
+            None
+        };
+
+        self.thumbnail_id = if let Some(thumb) = &self.thumbnail {
+            let id = aoba.upload(thumb).await?;
+            self.thumbnail = Some(aoba.format(&id));
+
+            Some(id)
+        } else {
+            None
+        };
+
+        Ok(())
     }
 }

@@ -1,4 +1,4 @@
-use crate::client::Arkalis;
+use crate::{aoba::AobaService, client::Arkalis};
 use clap::{Subcommand, ValueEnum};
 
 pub mod add;
@@ -49,10 +49,10 @@ pub enum AnimeCommands {
     },
 }
 
-pub async fn run(command: AnimeCommands, client: Arkalis) -> anyhow::Result<()> {
+pub async fn run(command: AnimeCommands, client: Arkalis, aoba: AobaService) -> anyhow::Result<()> {
     match command {
         AnimeCommands::Get { id, source, output } => get::get(id, source, client, output).await,
-        AnimeCommands::Add { file } => add::add(file, client).await,
+        AnimeCommands::Add { file } => add::add(file, client, aoba).await,
         //deve realmente ter algum jeito melhor de fazer isso
         AnimeCommands::Search {
             title,

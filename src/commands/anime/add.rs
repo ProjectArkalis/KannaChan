@@ -1,12 +1,12 @@
 use crate::{
+    aoba::AobaService,
     arkalis_api::{AddSeasonRequest, CreateAnimeRequest, EditAnimeRequest, EditSeasonRequest},
     client::Arkalis,
     models::anime::anime_infos::AnimeInfos,
-    // models::anime::ArkalisAnime,
 };
 use tokio::fs;
 
-pub async fn add(file: String, mut client: Arkalis) -> anyhow::Result<()> {
+pub async fn add(file: String, mut client: Arkalis, aoba: AobaService) -> anyhow::Result<()> {
     let contents = fs::read(&file).await?;
     let contents_str = String::from_utf8(contents)?;
 
@@ -32,6 +32,8 @@ pub async fn add(file: String, mut client: Arkalis) -> anyhow::Result<()> {
 
         println!("Atualizado anime com o id: {}", id);
     } else {
+        anime.anime.save_images(aoba).await?;
+
         let resp = client
             .create_anime(CreateAnimeRequest::from(anime.anime.clone()))
             .await?;
