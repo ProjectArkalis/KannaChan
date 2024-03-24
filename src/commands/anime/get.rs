@@ -53,6 +53,7 @@ pub async fn get(
                                 id: Some(x.id),
                                 name: x.name.clone(),
                                 thumbnail: x.cover_id.clone(),
+                                thumbnail_id: x.cover_id.clone()
                             })
                             .collect::<Vec<KannaSeason>>(),
                     })

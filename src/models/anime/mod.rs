@@ -134,7 +134,7 @@ impl From<arkalis_api::Anime> for KannaAnime {
 }
 
 impl KannaAnime {
-    pub async fn save_images(&mut self, aoba: AobaService) -> anyhow::Result<()> {
+    pub async fn save_images(&mut self, aoba: &AobaService) -> anyhow::Result<()> {
         self.banner_id = if let Some(banner) = &self.banner {
             let id = aoba.upload(banner).await?;
             self.banner = Some(aoba.format(&id));

@@ -47,6 +47,7 @@ pub async fn get_season(id: i64) -> anyhow::Result<Vec<KannaSeason>, ()> {
             .unwrap()
             .clone(),
         thumbnail: media.cover_image.as_ref().unwrap().extra_large.clone(),
+        thumbnail_id: None
     });
 
     if let Some(relations) = media.relations {

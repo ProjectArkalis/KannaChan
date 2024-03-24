@@ -51,8 +51,8 @@ impl From<AnimeInfos> for EditAnimeRequest {
             release_date: value.anime.release_date,
             synopsis: value.anime.synopsis,
             titles: value.anime.titles.into_iter().map(|x| x.into()).collect(),
-            banner_id: value.anime.banner,
-            thumbnail_id: value.anime.thumbnail,
+            banner_id: value.anime.banner_id,
+            thumbnail_id: value.anime.thumbnail_id,
         }
     }
 }

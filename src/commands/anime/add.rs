@@ -13,16 +13,20 @@ pub async fn add(file: String, mut client: Arkalis, aoba: AobaService) -> anyhow
     let mut anime = serde_json::from_str::<AnimeInfos>(&contents_str)?;
 
     if let Some(id) = anime.arkalis_id {
+        anime.anime.save_images(&aoba).await?;
+
         client
             .edit_anime(EditAnimeRequest::from(anime.clone()))
             .await?;
 
-        for season in anime.seasons.iter().enumerate() {
+        for season in anime.seasons.iter_mut().enumerate() {
             if let Some(s_id) = season.1.id {
+                season.1.save_thumb(&aoba).await?;
+
                 client
                     .edit_season(EditSeasonRequest {
                         id: s_id,
-                        cover_id: season.1.thumbnail.clone(),
+                        cover_id: season.1.thumbnail_id.clone(),
                         name: season.1.name.clone(),
                         sequence: season.0 as u32,
                     })
@@ -32,7 +36,7 @@ pub async fn add(file: String, mut client: Arkalis, aoba: AobaService) -> anyhow
 
         println!("Atualizado anime com o id: {}", id);
     } else {
-        anime.anime.save_images(aoba).await?;
+        anime.anime.save_images(&aoba).await?;
 
         let resp = client
             .create_anime(CreateAnimeRequest::from(anime.anime.clone()))
@@ -40,10 +44,12 @@ pub async fn add(file: String, mut client: Arkalis, aoba: AobaService) -> anyhow
         let id = resp.into_inner().id;
 
         for season in anime.seasons.iter_mut().enumerate() {
+            season.1.save_thumb(&aoba).await?;
+
             let season_id = client
                 .add_season(AddSeasonRequest {
                     name: season.1.name.clone(),
-                    cover_id: season.1.thumbnail.clone(),
+                    cover_id: season.1.thumbnail_id.clone(),
                     sequence: season.0 as u32,
                     anime_id: id,
                 })
@@ -54,10 +60,10 @@ pub async fn add(file: String, mut client: Arkalis, aoba: AobaService) -> anyhow
         }
 
         anime.arkalis_id = Some(id);
-        fs::write(file, serde_json::to_string_pretty(&anime)?).await?;
 
         println!("Anime adicionado com o id: {}", id);
     }
-
+    
+    fs::write(file, serde_json::to_string_pretty(&anime)?).await?;
     Ok(())
 }
