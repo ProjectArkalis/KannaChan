@@ -31,11 +31,11 @@ impl AobaService {
         format!("{}/images/{}", self.url, id)
     }
 
-    pub async fn upload(&self, img: &String) -> anyhow::Result<String> {
+    pub async fn upload(&self, img: &str) -> anyhow::Result<String> {
         let resp = self
             .client
             .post(format!("{}/images/url", self.url))
-            .json(&Image { url: img.clone() })
+            .json(&Image { url: img.to_owned() })
             .send()
             .await?
             .text()

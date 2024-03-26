@@ -15,7 +15,7 @@ pub struct KannaSeason {
 impl KannaSeason {
     pub async fn save_thumb(&mut self, aoba: &AobaService) -> anyhow::Result<()> {
         self.thumbnail_id = if let Some(thumb) = &self.thumbnail {
-            let id = aoba.upload(&thumb).await?;
+            let id = aoba.upload(thumb).await?;
             self.thumbnail = Some(aoba.format(&id));
 
             Some(id)

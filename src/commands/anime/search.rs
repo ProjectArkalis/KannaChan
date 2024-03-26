@@ -25,7 +25,7 @@ pub async fn search(
         .into_inner()
         .animes
         .into_iter()
-        .map(|x| SearchTable::from(x))
+        .map(SearchTable::from)
         .collect::<Vec<SearchTable>>();
 
     let tabled = Table::new(b).to_string();
