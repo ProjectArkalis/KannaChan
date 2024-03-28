@@ -16,9 +16,11 @@ impl AobaService {
     pub fn start(configs: &Configs) -> anyhow::Result<Self> {
         let mut headers = HeaderMap::new();
 
-        let mut auth_value = HeaderValue::from_str(&format!("Bearer {}", configs.token.as_ref().unwrap()))?;
-        auth_value.set_sensitive(true);
-        headers.insert(header::AUTHORIZATION, auth_value);
+        if let Some(token) = configs.token.as_ref() {
+            let mut auth_value = HeaderValue::from_str(&format!("Bearer {}", token))?;
+            auth_value.set_sensitive(true);
+            headers.insert(header::AUTHORIZATION, auth_value);
+        }
 
         let client = Client::builder().default_headers(headers).build()?;
         Ok(AobaService {
@@ -35,7 +37,9 @@ impl AobaService {
         let resp = self
             .client
             .post(format!("{}/images/url", self.url))
-            .json(&Image { url: img.to_owned() })
+            .json(&Image {
+                url: img.to_owned(),
+            })
             .send()
             .await?
             .text()
