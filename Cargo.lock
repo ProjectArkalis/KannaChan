@@ -391,29 +391,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "env_filter"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a009aa4810eb158359dda09d0c87378e4bbb89b5a801f016885a4707ba24f7ea"
-dependencies = [
- "log",
- "regex",
-]
-
-[[package]]
-name = "env_logger"
-version = "0.11.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "38b35839ba51819680ba087cd351788c9a3c476841207e0b8cee0b04722343b9"
-dependencies = [
- "anstream",
- "anstyle",
- "env_filter",
- "humantime",
- "log",
-]
-
-[[package]]
 name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -722,12 +699,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
-name = "humantime"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a3a5bfb195931eeb336b2a7b4d761daec841b97f947d34394601737a7bba5e4"
-
-[[package]]
 name = "hyper"
 version = "0.14.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -932,26 +903,23 @@ dependencies = [
  "chrono",
  "clap",
  "dotenv",
- "env_logger",
  "figment",
  "graphql_client",
  "kanna-commons",
  "lazy_static",
  "log",
- "prost",
  "reqwest 0.11.27",
- "scanln",
  "serde",
  "serde_json",
  "tabled",
  "tokio",
  "toml",
- "tonic",
 ]
 
 [[package]]
 name = "kanna-commons"
 version = "0.1.0"
+source = "git+https://github.com/ProjectArkalis/KannaCommons#85534634b27a0040dd04fc60a016d75d0d1d0f3f"
 dependencies = [
  "anyhow",
  "bitflags 2.5.0",
@@ -1519,12 +1487,6 @@ name = "ryu"
 version = "1.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e86697c916019a8588c99b5fac3cead74ec0b4b819707a682fd4d23fa0ce1ba1"
-
-[[package]]
-name = "scanln"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e77c9c2f6f56ae8282fe6b5e17bb5b56b7abd9707c91330b21df9e070a4b52ff"
 
 [[package]]
 name = "sct"
