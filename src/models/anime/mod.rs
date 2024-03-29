@@ -1,15 +1,14 @@
 use self::{
     anime_lists::KannaAnimeList,
-    genres::Genre,
     title::{KannaTitle, KannaTitleType},
 };
 use crate::{anilist::get_media::GetMediaMedia, aoba::AobaService, arkalis_api};
+use arkalis_commons::enums::genres::Genre;
 use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 
 pub mod anime_infos;
 pub mod anime_lists;
-pub mod genres;
 pub mod title;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
