@@ -1,8 +1,10 @@
 use self::get_media::{GetMediaMedia, MediaRelation, MediaStatus};
-use crate::models::season::KannaSeason;
 use async_recursion::async_recursion;
 use graphql_client::{reqwest::post_graphql, GraphQLQuery};
+use kanna_commons::repos::season::KannaSeason;
 use reqwest::Client;
+
+pub mod anime;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -47,7 +49,6 @@ pub async fn get_season(id: i64) -> anyhow::Result<Vec<KannaSeason>, ()> {
             .unwrap()
             .clone(),
         thumbnail: media.cover_image.as_ref().unwrap().extra_large.clone(),
-        thumbnail_id: None
     });
 
     if let Some(relations) = media.relations {

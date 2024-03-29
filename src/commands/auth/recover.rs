@@ -1,31 +1,20 @@
-use crate::{
-    arkalis_api::{GetUserInfoRequest, RecoveryUserRequest},
-    client::{get_client, Arkalis},
-    models::user::User,
-    CONFIGS,
-};
+use kanna_commons::{arkalis::Arkalis, repos::user::KannaUser};
 use tokio::fs;
 
-pub async fn recover(key: String, mut client: Arkalis) -> anyhow::Result<()> {
-    let token = client
-        .recovery_user(RecoveryUserRequest { recovery_key: key })
-        .await?
-        .into_inner()
-        .token;
+use crate::CONFIGS;
 
-    client = get_client(Some(token.clone())).await?;
-    let user = client.get_user_info(GetUserInfoRequest {}).await?;
-    let user = User::from(user.into_inner());
+pub async fn recover(key: String, mut arkalis: Arkalis) -> anyhow::Result<()> {
+    let user = KannaUser::from_recovery_key(key, &mut arkalis).await?;
 
     println!(
         "Recuperado usuario: {} [{}]; Role: {}",
-        user.display_name,
+        user.name,
         user.id,
         String::from(user.role)
     );
 
     let mut configs = CONFIGS.clone();
-    configs.token = Some(token);
+    configs.token = user.token;
 
     fs::write("configs.toml", toml::to_string_pretty(&configs).unwrap()).await?;
 

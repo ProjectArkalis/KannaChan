@@ -1,5 +1,5 @@
-use crate::{aoba::AobaService, client::Arkalis};
 use clap::{Subcommand, ValueEnum};
+use kanna_commons::{aoba::Aoba, arkalis::Arkalis};
 
 pub mod add;
 pub mod get;
@@ -49,10 +49,10 @@ pub enum AnimeCommands {
     },
 }
 
-pub async fn run(command: AnimeCommands, client: Arkalis, aoba: AobaService) -> anyhow::Result<()> {
+pub async fn run(command: AnimeCommands, arkalis: Arkalis, aoba: Aoba) -> anyhow::Result<()> {
     match command {
-        AnimeCommands::Get { id, source, output } => get::get(id, source, client, output).await,
-        AnimeCommands::Add { file } => add::add(file, client, aoba).await,
+        AnimeCommands::Get { id, source, output } => get::get(id, source, output, arkalis).await,
+        AnimeCommands::Add { file } => add::add(file, aoba, arkalis).await,
         //deve realmente ter algum jeito melhor de fazer isso
         AnimeCommands::Search {
             title,
@@ -69,7 +69,7 @@ pub async fn run(command: AnimeCommands, client: Arkalis, aoba: AobaService) -> 
                 genre,
                 start_release_date,
                 end_release_date,
-                client,
+                arkalis,
             )
             .await
         }

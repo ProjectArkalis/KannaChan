@@ -1,4 +1,5 @@
-use crate::{arkalis_api::SearchAnimeRequest, client::Arkalis, models::search_table::SearchTable};
+use crate::models::search_table::SearchTable;
+use kanna_commons::{arkalis::Arkalis, repos::anime_infos::AnimeInfos};
 use tabled::Table;
 
 pub async fn search(
@@ -8,25 +9,21 @@ pub async fn search(
     genre: Option<u64>,
     start_release_date: Option<i64>,
     end_release_date: Option<i64>,
-    mut client: Arkalis,
+    mut arkalis: Arkalis,
 ) -> anyhow::Result<()> {
-    let a = client
-        .search_anime(SearchAnimeRequest {
-            title,
-            synopsis,
-            is_nsfw,
-            genre,
-            start_release_date,
-            end_release_date,
-        })
-        .await?;
-
-    let b = a
-        .into_inner()
-        .animes
-        .into_iter()
-        .map(SearchTable::from)
-        .collect::<Vec<SearchTable>>();
+    let b = AnimeInfos::search(
+        title,
+        synopsis,
+        is_nsfw,
+        genre,
+        start_release_date,
+        end_release_date,
+        &mut arkalis,
+    )
+    .await?
+    .into_iter()
+    .map(SearchTable::from)
+    .collect::<Vec<SearchTable>>();
 
     let tabled = Table::new(b).to_string();
     println!("{tabled}");

@@ -1,4 +1,4 @@
-use crate::arkalis_api::Anime;
+use kanna_commons::repos::anime_infos::AnimeInfos;
 use tabled::Tabled;
 
 #[derive(Debug, Tabled)]
@@ -8,18 +8,19 @@ pub struct SearchTable {
     pub genre: u64,
 }
 
-impl From<Anime> for SearchTable {
-    fn from(value: Anime) -> Self {
+impl From<AnimeInfos> for SearchTable {
+    fn from(value: AnimeInfos) -> Self {
         SearchTable {
-            id: value.id,
+            id: value.arkalis_id.unwrap(),
             title: value
+                .anime
                 .titles
                 .iter()
                 .find(|x| x.is_main)
                 .unwrap()
-                .name
+                .title
                 .clone(),
-            genre: value.genre,
+            genre: value.anime.genre,
         }
     }
 }

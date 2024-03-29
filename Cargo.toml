@@ -28,14 +28,15 @@ tonic = "0.11.0"
 prost = "0.12.3"
 anyhow = "1.0.81"
 lazy_static = "1.4.0"
-graphql_client = { version = "0.14.0", features = ["reqwest-rustls", "reqwest-blocking"] }
+graphql_client = { version = "0.14.0", features = [
+    "reqwest-rustls",
+    "reqwest-blocking",
+] }
 chrono = "0.4.35"
 tabled = "0.15.0"
 bitflags = "2.5.0"
 async-recursion = "1.1.0"
 env_logger = "0.11.3"
 log = "0.4.21"
-arkalis-commons = { git = "https://github.com/ProjectArkalis/ArkalisCommons" }
-
-[build-dependencies]
-tonic-build = "0.11"
+# arkalis-commons = { git = "https://github.com/ProjectArkalis/ArkalisCommons" }
+kanna-commons = { path = "/home/yummi/CodigosFodas/KannaCommons" }

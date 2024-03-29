@@ -1,5 +1,5 @@
-use crate::client::Arkalis;
 use clap::Subcommand;
+use kanna_commons::arkalis::Arkalis;
 
 pub mod login;
 pub mod recover;
@@ -21,9 +21,9 @@ pub enum AuthCommands {
     },
 }
 
-pub async fn run(command: AuthCommands, client: Arkalis) -> anyhow::Result<()> {
+pub async fn run(command: AuthCommands, arkalis: Arkalis) -> anyhow::Result<()> {
     match command {
-        AuthCommands::Login { name, admin_key } => login::login(name, admin_key, client).await,
-        AuthCommands::Recover { key } => recover::recover(key, client).await,
+        AuthCommands::Login { name, admin_key } => login::login(name, admin_key, arkalis).await,
+        AuthCommands::Recover { key } => recover::recover(key, arkalis).await,
     }
 }
