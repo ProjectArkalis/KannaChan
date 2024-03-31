@@ -20,6 +20,11 @@ query GetMedia($id: Int!) {
       month
       day
     }
+    episodes
+    streamingEpisodes {
+      title
+      thumbnail
+    }
     relations {
       edges {
         relationType

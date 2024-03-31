@@ -34,5 +34,5 @@ tabled = "0.15.0"
 bitflags = "2.5.0"
 async-recursion = "1.1.0"
 log = "0.4.21"
-kanna-commons = { git = "https://github.com/ProjectArkalis/KannaCommons" }
-# kanna-commons = { path = "/home/yummi/CodigosFodas/KannaCommons" }
+# kanna-commons = { git = "https://github.com/ProjectArkalis/KannaCommons" }
+kanna-commons = { path = "/home/yummi/CodigosFodas/KannaCommons" }
