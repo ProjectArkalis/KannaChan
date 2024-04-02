@@ -1,9 +1,6 @@
 use kanna_commons::{
     arkalis::Arkalis,
-    repos::{
-        anime_infos::AnimeInfos, episode::KannaEpisode, source::KannaSource,
-        source_types::SourceType,
-    },
+    repos::{anime_infos::AnimeInfos, episode::KannaEpisode, source::KannaSource},
 };
 use tokio::fs;
 
@@ -14,38 +11,42 @@ pub async fn add(
     sequence: u32,
     mut arkalis: Arkalis,
 ) -> anyhow::Result<()> {
-    let contents = fs::read(&file).await?;
-    let contents_str = String::from_utf8(contents)?;
+    if KannaSource::from_id(source, &mut arkalis).await.is_ok() {
+        let contents = fs::read(&file).await?;
+        let contents_str = String::from_utf8(contents)?;
 
-    let mut anime = serde_json::from_str::<AnimeInfos>(&contents_str)?;
+        let mut anime = serde_json::from_str::<AnimeInfos>(&contents_str)?;
 
-    if anime.seasons.len() > season {
-        if let Some(season_id) = anime.seasons[season].id {
-            let mut ep = KannaEpisode {
-                ..Default::default()
-            };
+        if anime.seasons.len() > season {
+            if let Some(season_id) = anime.seasons[season].id {
+                let mut ep = KannaEpisode {
+                    ..Default::default()
+                };
 
-            ep.create_episode(season_id, source, sequence, &mut arkalis)
-                .await?;
+                ep.create_episode(season_id, source, sequence, &mut arkalis)
+                    .await?;
 
-            if let Some(s) = anime.seasons[season]
-                .sources
-                .iter_mut()
-                .find(|x| x.id == Some(source))
-            {
-                s.episodes.push(ep);
+                if let Some(s) = anime.seasons[season]
+                    .sources
+                    .iter_mut()
+                    .find(|x| x.id == Some(source))
+                {
+                    s.episodes.push(ep);
+                } else {
+                    let mut s = KannaSource::from_id(source, &mut arkalis).await?;
+                    s.episodes.push(ep);
+                    anime.seasons[season].sources.push(s)
+                }
+
+                fs::write(&file, serde_json::to_string_pretty(&anime)?).await?;
             } else {
-                let mut s = KannaSource::from_id(source, &mut arkalis).await?;
-                s.episodes.push(ep);
-                anime.seasons[season].sources.push(s)
+                println!("Temporada sem id")
             }
-
-            fs::write(&file, serde_json::to_string_pretty(&anime)?).await?;
         } else {
-            println!("Temporada sem id")
+            println!("Temporada não existe")
         }
     } else {
-        println!("Temporada não existe")
+        println!("Source não existe")
     }
 
     Ok(())

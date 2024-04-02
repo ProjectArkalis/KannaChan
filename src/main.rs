@@ -25,6 +25,6 @@ async fn main() -> anyhow::Result<()> {
         Commands::Auth { command } => auth::run(command, arkalis).await,
         Commands::Anime { command } => anime::run(command, arkalis, aoba).await,
         Commands::Source { command } => source::run(command, arkalis).await,
-        Commands::Episodes { command } => episodes::run(command, arkalis).await
+        Commands::Episodes { command } => episodes::run(command, arkalis).await,
     }
 }
