@@ -1,4 +1,4 @@
-use crate::commands::{anime::AnimeCommands, auth::AuthCommands};
+use crate::commands::{anime::AnimeCommands, auth::AuthCommands, episodes::EpisodesCommands, source::SourceCommands};
 use clap::{Parser, Subcommand};
 
 #[derive(Debug, Parser)]
@@ -19,4 +19,14 @@ pub enum Commands {
         #[clap(subcommand)]
         command: AnimeCommands,
     },
+    /// Gerenciar sources
+    Source {
+        #[clap(subcommand)]
+        command: SourceCommands,
+    },
+    /// Gerenciar episodios
+    Episodes {
+        #[clap(subcommand)]
+        command: EpisodesCommands
+    }
 }

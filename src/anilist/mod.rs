@@ -1,7 +1,7 @@
 use self::get_media::{GetMediaMedia, MediaRelation, MediaStatus};
 use async_recursion::async_recursion;
 use graphql_client::{reqwest::post_graphql, GraphQLQuery};
-use kanna_commons::repos::{episode::KannaEpisode, season::KannaSeason};
+use kanna_commons::repos::season::KannaSeason;
 use reqwest::Client;
 
 pub mod anime;
@@ -38,7 +38,7 @@ pub async fn get_season(id: i64) -> anyhow::Result<Vec<KannaSeason>, ()> {
     let mut seasons = vec![];
 
     let media = get_media(id).await?;
-    let episodes = media.streaming_episodes.unwrap();
+    // let episodes = media.streaming_episodes.unwrap();
 
     seasons.push(KannaSeason {
         id: None,
@@ -51,23 +51,23 @@ pub async fn get_season(id: i64) -> anyhow::Result<Vec<KannaSeason>, ()> {
             .unwrap()
             .clone(),
         thumbnail: media.cover_image.as_ref().unwrap().extra_large.clone(),
-        //fun fact: aparentemente, nem sempre vai ter eps
-        episodes: if episodes.len() != 0 {
-            episodes
-                .iter()
-                .map(|x| KannaEpisode {
-                    id: None,
-                    is_hidden: false,
-                    is_nsfw: false,
-                    lbry_url: Default::default(),
-                    thumbnail: x.as_ref().unwrap().thumbnail.clone(),
-                    title: x.as_ref().unwrap().title.clone(),
-                    name: None
-                })
-                .collect()
-        } else {
-            vec![KannaEpisode::default(); media.episodes.unwrap().try_into().unwrap()]
-        },
+        sources: vec![], //fun fact: aparentemente, nem sempre vai ter eps
+                         // episodes: if episodes.len() != 0 {
+                         //     episodes
+                         //         .iter()
+                         //         .map(|x| KannaEpisode {
+                         //             id: None,
+                         //             is_hidden: false,
+                         //             is_nsfw: false,
+                         //             lbry_url: Default::default(),
+                         //             thumbnail: x.as_ref().unwrap().thumbnail.clone(),
+                         //             title: x.as_ref().unwrap().title.clone(),
+                         //             name: None
+                         //         })
+                         //         .collect()
+                         // } else {
+                         //     vec![KannaEpisode::default(); media.episodes.unwrap().try_into().unwrap()]
+                         // },
     });
 
     if let Some(relations) = media.relations {
