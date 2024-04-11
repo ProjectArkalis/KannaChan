@@ -23,25 +23,34 @@ impl From<GetMediaMedia> for KannaAnime {
         let datetime = naive_date.and_hms_opt(0, 0, 0).unwrap();
 
         let datetime: DateTime<Utc> = DateTime::from_naive_utc_and_offset(datetime, Utc);
+        let mut titles = vec![];
+
+        if let Some(title) = title.english {
+            titles.push(KannaTitle {
+                title,
+                is_main: false,
+                title_type: KannaTitleTypes::English,
+            });
+        }
+
+        if let Some(title) = title.romaji {
+            titles.push(KannaTitle {
+                title,
+                is_main: true,
+                title_type: KannaTitleTypes::Romaji,
+            });
+        }
+
+        if let Some(title) = title.native {
+            titles.push(KannaTitle {
+                title,
+                is_main: false,
+                title_type: KannaTitleTypes::Native,
+            });
+        }
 
         KannaAnime {
-            titles: vec![
-                KannaTitle {
-                    title: title.english.unwrap(),
-                    is_main: false,
-                    title_type: KannaTitleTypes::English,
-                },
-                KannaTitle {
-                    title: title.romaji.unwrap(),
-                    is_main: true,
-                    title_type: KannaTitleTypes::Romaji,
-                },
-                KannaTitle {
-                    title: title.native.unwrap(),
-                    is_main: false,
-                    title_type: KannaTitleTypes::Native,
-                },
-            ],
+            titles,
             synopsis: value.description.unwrap(),
             thumbnail: value.cover_image.unwrap().extra_large,
             banner: value.banner_image,

@@ -1,8 +1,8 @@
 use crate::configs::Configs;
 use arguments::{Cli, Commands};
 use clap::Parser;
-use commands::{anime, auth, episodes, source};
-use kanna_commons::get_clients;
+use commands::{anime, auth, episodes, source, utils};
+use kanna_commons::Clients;
 
 mod anilist;
 mod arguments;
@@ -18,13 +18,13 @@ lazy_static::lazy_static! {
 async fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
 
-    let (arkalis, aoba) =
-        get_clients(&CONFIGS.arkalis_url, &CONFIGS.aoba_url, &CONFIGS.token).await?;
+    let clients = Clients::new_clients(&CONFIGS.arkalis_url, &CONFIGS.aoba_url, &CONFIGS.token).await;
 
     match args.command {
-        Commands::Auth { command } => auth::run(command, arkalis).await,
-        Commands::Anime { command } => anime::run(command, arkalis, aoba).await,
-        Commands::Source { command } => source::run(command, arkalis).await,
-        Commands::Episodes { command } => episodes::run(command, arkalis).await,
+        Commands::Auth { command } => auth::run(command, clients.arkalis?).await,
+        Commands::Anime { command } => anime::run(command, clients.arkalis?, clients.aoba?).await,
+        Commands::Source { command } => source::run(command, clients.arkalis?).await,
+        Commands::Episodes { command } => episodes::run(command, clients.arkalis?).await,
+        Commands::Utils { command } => utils::run(command).await,
     }
 }
