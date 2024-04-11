@@ -42,6 +42,7 @@ pub async fn get_season(id: i64) -> anyhow::Result<Vec<KannaSeason>, ()> {
 
     seasons.push(KannaSeason {
         id: None,
+        sequence: 0,
         name: media
             .title
             .as_ref()
