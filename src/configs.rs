@@ -59,10 +59,14 @@ impl Configs {
 }
 
 pub fn get_configs_dir() -> anyhow::Result<String> {
-    let dir = format!(
-        "{}/kanna-chan",
-        config_dir().unwrap().to_str().unwrap().to_owned()
-    );
+    let dir = if cfg!(debug_assertions) {
+        "".to_owned()
+    } else {
+        format!(
+            "{}/kanna-chan",
+            config_dir().unwrap().to_str().unwrap().to_owned()
+        )
+    };
 
     std::fs::create_dir_all(&dir)?;
 

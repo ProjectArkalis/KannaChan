@@ -51,7 +51,7 @@ pub enum AnimeCommands {
 
 pub async fn run(command: AnimeCommands, arkalis: Arkalis, aoba: Aoba) -> anyhow::Result<()> {
     match command {
-        AnimeCommands::Get { id, source, output } => get::get(id, source, output, arkalis).await,
+        AnimeCommands::Get { id, source, output } => get::get(id, source, output, arkalis, aoba).await,
         AnimeCommands::Add { file } => add::add(file, aoba, arkalis).await,
         //deve realmente ter algum jeito melhor de fazer isso
         AnimeCommands::Search {
