@@ -921,7 +921,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kanna-chan"
+name = "kanna"
 version = "0.1.0"
 dependencies = [
  "anyhow",
