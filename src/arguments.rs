@@ -1,5 +1,6 @@
 use crate::commands::{
-    anime::AnimeCommands, auth::AuthCommands, episodes::EpisodesCommands, source::SourceCommands, utils::UtilsCommands,
+    anime::AnimeCommands, auth::AuthCommands, episodes::EpisodesCommands, source::SourceCommands,
+    utils::UtilsCommands,
 };
 use clap::{Parser, Subcommand};
 
@@ -34,6 +35,6 @@ pub enum Commands {
     /// Algumas coisas bem legais e fofas
     Utils {
         #[clap(subcommand)]
-        command: UtilsCommands
-    }
+        command: UtilsCommands,
+    },
 }

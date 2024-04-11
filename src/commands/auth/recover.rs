@@ -1,7 +1,5 @@
-use kanna_commons::{arkalis::Arkalis, repos::user::KannaUser};
-use tokio::fs;
-
 use crate::CONFIGS;
+use kanna_commons::{arkalis::Arkalis, repos::user::KannaUser};
 
 pub async fn recover(key: String, mut arkalis: Arkalis) -> anyhow::Result<()> {
     let user = KannaUser::from_recovery_key(key, &mut arkalis).await?;
@@ -16,7 +14,7 @@ pub async fn recover(key: String, mut arkalis: Arkalis) -> anyhow::Result<()> {
     let mut configs = CONFIGS.clone();
     configs.token = user.token;
 
-    fs::write("configs.toml", toml::to_string_pretty(&configs).unwrap()).await?;
+    configs.save().await?;
 
     println!("Token salvo ;)");
     Ok(())

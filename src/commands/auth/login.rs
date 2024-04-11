@@ -1,7 +1,5 @@
-use kanna_commons::{arkalis::Arkalis, repos::user::KannaUser};
-use tokio::fs;
-
 use crate::CONFIGS;
+use kanna_commons::{arkalis::Arkalis, repos::user::KannaUser};
 
 pub async fn login(
     name: String,
@@ -25,7 +23,7 @@ pub async fn login(
     let mut configs = CONFIGS.clone();
     configs.token = user.token;
 
-    fs::write("configs.toml", toml::to_string_pretty(&configs).unwrap()).await?;
+    configs.save().await?;
 
     println!("Token salvo ;)");
     Ok(())

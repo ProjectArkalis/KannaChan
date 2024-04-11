@@ -18,7 +18,8 @@ lazy_static::lazy_static! {
 async fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
 
-    let clients = Clients::new_clients(&CONFIGS.arkalis_url, &CONFIGS.aoba_url, &CONFIGS.token).await;
+    let clients =
+        Clients::new_clients(&CONFIGS.arkalis_url, &CONFIGS.aoba_url, &CONFIGS.token).await;
 
     match args.command {
         Commands::Auth { command } => auth::run(command, clients.arkalis?).await,
