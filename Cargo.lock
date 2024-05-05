@@ -954,7 +954,7 @@ dependencies = [
 [[package]]
 name = "kanna-commons"
 version = "0.1.0"
-source = "git+https://github.com/ProjectArkalis/KannaCommons?rev=f1b6161f6087bdd351c60a531146775c2e0a9c07#f1b6161f6087bdd351c60a531146775c2e0a9c07"
+source = "git+https://github.com/ProjectArkalis/KannaCommons?rev=b86b74e90a16ebdb7f0a341bf3f4969f112a6ec0#b86b74e90a16ebdb7f0a341bf3f4969f112a6ec0"
 dependencies = [
  "anyhow",
  "bitflags 2.5.0",
