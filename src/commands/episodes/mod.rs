@@ -14,8 +14,6 @@ pub enum EpisodesCommands {
         season: usize,
         #[arg(short = 'n', long)]
         sequence: u32,
-        #[arg(short, long)]
-        url: String
     },
 }
 
@@ -26,7 +24,6 @@ pub async fn run(command: EpisodesCommands, arkalis: Arkalis) -> anyhow::Result<
             source,
             season,
             sequence,
-            url,
-        } => add::add(file, source, season, sequence, url, arkalis).await,
+        } => add::add(file, source, season, sequence, arkalis).await,
     }
 }

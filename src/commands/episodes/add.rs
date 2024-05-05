@@ -9,7 +9,6 @@ pub async fn add(
     source: u32,
     season: usize,
     sequence: u32,
-    url: String,
     mut arkalis: Arkalis,
 ) -> anyhow::Result<()> {
     if KannaSource::from_id(source, &mut arkalis).await.is_ok() {
@@ -21,7 +20,6 @@ pub async fn add(
         if anime.seasons.len() > season {
             if let Some(season_id) = anime.seasons[season].id {
                 let mut ep = KannaEpisode {
-                    lbry_url: Some(url),
                     ..Default::default()
                 };
 
