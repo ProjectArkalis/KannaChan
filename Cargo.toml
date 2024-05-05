@@ -34,7 +34,7 @@ tabled = "0.15.0"
 bitflags = "2.5.0"
 async-recursion = "1.1.0"
 log = "0.4.21"
-kanna-commons = { git = "https://github.com/ProjectArkalis/KannaCommons", rev = "3c2dbc713388fd10c6a232d610302a9ec1205c79", features = [
+kanna-commons = { git = "https://github.com/ProjectArkalis/KannaCommons", rev = "f1b6161f6087bdd351c60a531146775c2e0a9c07", features = [
     "enum",
 ] }
 # kanna-commons = { path = "/home/yummi/CodigosFodas/KannaCommons", features = ["enum"]}

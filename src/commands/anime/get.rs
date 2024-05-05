@@ -1,7 +1,9 @@
 use super::InfoSource;
 use crate::anilist;
 use kanna_commons::{
-    aoba::Aoba, arkalis::Arkalis, repos::{anime::KannaAnime, anime_infos::AnimeInfos}
+    aoba::Aoba,
+    arkalis::Arkalis,
+    repos::{anime::KannaAnime, anime_infos::AnimeInfos},
 };
 use log::info;
 use std::path::Path;
@@ -12,7 +14,7 @@ pub async fn get(
     source: InfoSource,
     output: String,
     mut arkalis: Arkalis,
-    aoba: Aoba
+    aoba: Aoba,
 ) -> anyhow::Result<()> {
     let anime = match source {
         InfoSource::Anilist => {
@@ -29,9 +31,11 @@ pub async fn get(
             }
         }
         InfoSource::Arkalis => {
-            if let Ok(mut anime) = AnimeInfos::from_anime_id(id as u32, &mut arkalis).await {
-                anime.with_seasons(&mut arkalis).await?;
-                anime.fix_image_urls(&aoba);
+            if let Ok(anime) = AnimeInfos::from_anime_id(id as u32, &mut arkalis).await {
+                let anime = anime
+                    .with_seasons(&mut arkalis)
+                    .await?
+                    .fix_image_urls(&aoba);
                 Some(anime)
             } else {
                 None

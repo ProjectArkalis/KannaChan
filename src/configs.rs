@@ -21,7 +21,7 @@ impl Configs {
         Figment::from(Serialized::defaults(Configs::default()))
             .merge(Env::prefixed("ARKALIS"))
             .merge(Toml::file(format!(
-                "{}/configs.toml",
+                "{}configs.toml",
                 get_configs_dir().unwrap()
             )))
             .extract()
@@ -50,7 +50,7 @@ impl Default for Configs {
 impl Configs {
     pub async fn save(&self) -> anyhow::Result<()> {
         fs::write(
-            format!("{}/configs.toml", get_configs_dir()?),
+            format!("{}configs.toml", get_configs_dir()?),
             toml::to_string_pretty(self).unwrap(),
         )
         .await?;
@@ -63,7 +63,7 @@ pub fn get_configs_dir() -> anyhow::Result<String> {
         "".to_owned()
     } else {
         format!(
-            "{}/kanna-chan",
+            "{}/kanna-chan/",
             config_dir().unwrap().to_str().unwrap().to_owned()
         )
     };
